@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
-import { Database } from '@/lib/database.types'; // Optional: If you have a typed database
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
 
-  // Create Supabase client for middleware
-  const supabase = createServerClient<Database>(
+  // Create Supabase client for middleware (without Database type)
+  const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -15,11 +14,9 @@ export async function middleware(req: NextRequest) {
           return req.cookies.get(name)?.value;
         },
         set(name: string, value: string, options: any) {
-          // Set cookies in the response
           res.cookies.set(name, value, options);
         },
         remove(name: string, options: any) {
-          // Remove cookies in the response
           res.cookies.delete({ name, ...options });
         },
       },
