@@ -2,11 +2,11 @@ import { NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 
-// Explicitly type the configuration object for clarity
+// Define the configuration interface without explicit cookies type
 interface SupabaseConfig {
   supabaseURL: string;
   supabaseKey: string;
-  cookies: () => Promise<import('next/headers').ReadonlyRequestCookies>;
+  cookies: () => any; // Let TypeScript infer the type, or use `unknown` for safety
 }
 
 export async function GET(request: Request) {
