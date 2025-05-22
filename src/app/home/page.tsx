@@ -1,11 +1,11 @@
-import { redirect } from 'next/navigation';
+import HomeClient from './HomeClient';
 
-// Export metadata for SEO (optional, since it redirects)
+// Export metadata for SEO
 export const metadata = {
     title: 'CARAIELTS - Free IELTS Practice Tests',
     description: 'Prepare for IELTS with free online tests and expert courses.',
 };
 
-export default function RootPage() {
-    redirect('/home');
+export default function Home() {
+    return <HomeClient />;
 }
