@@ -1,23 +1,33 @@
 import { NextResponse } from 'next/server';
-import { createServerClient } from '@supabase/auth-helpers-nextjs';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 
 export async function GET(request: Request) {
-    const { searchParams } = new URL(request.url);
-    const code = searchParams.get('code');
-    const next = searchParams.get('next') ?? '/';
+  const { searchParams } = new URL(request.url);
+  const code = searchParams.get('code');
+  const next = searchParams.get('next') ?? '/';
 
-    if (code) {
-        const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        { cookies: () => ({ get: () => undefined, set: () => {}, remove: () => {} }) }
-        );
+  if (code) {
+    // Initialize Supabase client with cookies for session management
+    const supabase = createRouteHandlerClient(
+      {
+        supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      },
+      {
+        cookies: () => cookies(),
+      }
+    );
 
-        const { error } = await supabase.auth.exchangeCodeForSession(code);
-        if (!error) {
-        return NextResponse.redirect(new URL(next, request.url));
-        }
+    // Exchange the authorization code for a session
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+    if (error) {
+      console.error('Error exchanging code for session:', error);
+      return NextResponse.redirect(new URL('/auth/error', request.url));
     }
+  }
 
-    return NextResponse.redirect(new URL('/auth/error', request.url));
+  // Redirect to the next URL (default to homepage)
+  return NextResponse.redirect(new URL(next, request.url));
 }
