@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 import { User } from '@supabase/supabase-js';
+import { AuthChangeEvent, Session, Subscription } from '@supabase/supabase-js';
 
 // Initialize Supabase client (consider moving this to a separate file for reuse)
 const supabase = createClient(
@@ -40,14 +41,16 @@ useEffect(() => {
   };
   getUser();
 
-  const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-    setUser(session?.user ?? null);
-  });
+  const { data: authListener }: { data: { subscription: Subscription } } = supabase.auth.onAuthStateChange(
+    (event: AuthChangeEvent, session: Session | null) => {
+      setUser(session?.user ?? null);
+    }
+  );
 
   return () => {
     authListener.subscription?.unsubscribe();
   };
-}, []); // Fix: Add `supabase.auth` to the dependency array
+}, []);; // Fix: Add `supabase.auth` to the dependency array
 
   const signOut = async () => {
     await supabase.auth.signOut();

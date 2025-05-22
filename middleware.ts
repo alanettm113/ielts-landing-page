@@ -1,34 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
+import { CookieOptions } from '@supabase/ssr';
 
 export async function middleware(req: NextRequest) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    console.error('Missing Supabase environment variables in middleware');
+    return NextResponse.next(); // Proceed without Supabase, or redirect to an error page
+  }
+
   const res = NextResponse.next();
 
-  // Create Supabase client for middleware (without Database type)
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseKey,
     {
       cookies: {
         get(name: string) {
           return req.cookies.get(name)?.value;
         },
-        set(name: string, value: string, options: any) {
+        set(name: string, value: string, options: CookieOptions) {
           res.cookies.set(name, value, options);
         },
-        remove(name: string, options: any) {
+        remove(name: string, options: CookieOptions) {
           res.cookies.delete({ name, ...options });
         },
       },
     }
   );
 
-  // Example: Check if user is authenticated
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Example: Redirect unauthenticated users to login
   if (!user && req.nextUrl.pathname.startsWith('/test-portal')) {
     return NextResponse.redirect(new URL('/auth', req.url));
   }
@@ -36,7 +42,6 @@ export async function middleware(req: NextRequest) {
   return res;
 }
 
-// Optional: Specify which routes the middleware applies to
 export const config = {
   matcher: ['/test-portal/:path*', '/dashboard/:path*'],
 };
