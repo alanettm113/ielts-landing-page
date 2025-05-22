@@ -17,12 +17,17 @@ const supabase = createClient(
     const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
-        const getUser = async () => {
+    const getUser = async () => {
+        try {
         const { data } = await supabase.auth.getUser();
         setUser(data.user);
-        };
-        getUser();
-    }, [supabase.auth]); // Fix: Add `supabase.auth` to the dependency array
+        } catch (error) {
+        console.error('Error fetching user:', error);
+        setUser(null);
+        }
+    };
+    getUser();
+    }, []); // Fix: Add `supabase.auth` to the dependency array
 
     return (
         <div className="min-h-screen bg-white">

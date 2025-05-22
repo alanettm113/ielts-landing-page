@@ -27,21 +27,27 @@ export default function MainView() {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
+useEffect(() => {
+  const getUser = async () => {
+    try {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) throw error;
       setUser(data.user);
-    };
-    getUser();
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      setUser(null);
+    }
+  };
+  getUser();
 
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-    });
+  const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+    setUser(session?.user ?? null);
+  });
 
-    return () => {
-      authListener.subscription?.unsubscribe();
-    };
-  }, [supabase.auth]); // Fix: Add `supabase.auth` to the dependency array
+  return () => {
+    authListener.subscription?.unsubscribe();
+  };
+}, []); // Fix: Add `supabase.auth` to the dependency array
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -173,6 +179,13 @@ export default function MainView() {
           <div className="hidden lg:flex items-center justify-center flex-1">
             <NavigationMenu>
               <NavigationMenuList className="flex space-x-6">
+                 <NavigationMenuItem>
+                  <Link href="/home">
+                    <NavigationMenuLink className="text-gray-900 hover:bg-amber-500 px-3 py-2 text-sm font-medium rounded-md transition duration-300 ease-in-out">
+                      Trang Chủ
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="text-gray-900 hover:bg-amber-500 px-3 py-2 text-sm font-medium rounded-md transition duration-300 ease-in-out">
                     Bài Thi Thử
@@ -217,13 +230,7 @@ export default function MainView() {
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <Link href="/home">
-                    <NavigationMenuLink className="text-gray-900 hover:bg-amber-500 px-3 py-2 text-sm font-medium rounded-md transition duration-300 ease-in-out">
-                      Trang Chủ
-                    </NavigationMenuLink>
-                  </Link>
-                </NavigationMenuItem>
+
                 <NavigationMenuItem>
                   <Link href="/courses">
                     <NavigationMenuLink className="text-gray-900 hover:bg-amber-500 px-3 py-2 text-sm font-medium rounded-md transition duration-300 ease-in-out">
