@@ -2,9 +2,9 @@
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { CheckCircle, Star, Clock, ChevronLeft, ChevronRight, Laptop, Award, Users, Trophy, Book, User, Share2 } from 'lucide-react';
+import { Star, Laptop, Award, Users, Trophy, Book, User, Share2 } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay, Pagination } from 'swiper/modules';
+import { Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import Image from 'next/image'
