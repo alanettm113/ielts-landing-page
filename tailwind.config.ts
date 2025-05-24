@@ -8,11 +8,20 @@ module.exports = {
     ],
     theme: {
         extend: {
+            backgroundImage: {
+            "gradient-to-br": "linear-gradient(to bottom right, var(--tw-gradient-stops))",
+            "gradient-to-b": "linear-gradient(to bottom, var(--tw-gradient-stops))",
+            "gradient-to-t": "linear-gradient(to top, var(--tw-gradient-stops))",
+            "gradient-to-r": "linear-gradient(to right, var(--tw-gradient-stops))",
+            "gradient-to-l": "linear-gradient(to left, var(--tw-gradient-stops))",
+        },
         colors: {
             amber: {
             100: '#FEF3C7',
             500: '#F59E0B',
             600: '#D97706',
+            "custom-white": "#ffffff",
+            "custom-transparent": "transparent",
             },
         },
         animation: {

@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -111,6 +115,8 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+
+
 
 @layer base {
   * {
@@ -290,7 +296,8 @@ body {
 
 /* Image Zoom-In Effect on Hover */
 .image-zoom-container {
-    overflow: hidden;
+    overflow: hidden rounded-lg;
+
 }
 
 .image-zoom-container img {
