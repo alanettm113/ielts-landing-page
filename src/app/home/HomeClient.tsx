@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Star, Laptop, Award, Users, Trophy, Book, User, Share2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Star, Laptop, Share2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
