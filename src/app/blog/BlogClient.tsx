@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import Image from 'next/image'
 
 export default function Blog() {
     return (
@@ -19,6 +20,57 @@ export default function Blog() {
             </Button>
             </div>
         </section>
+
+            {/* Instructors Section */}
+            <section
+                className="py-16 bg-gray-100 bg-cover bg-center relative "
+                style={{ backgroundImage: 'url(/images/background_20.jpg)' }}
+            >
+                <div className="absolute inset-0 bg-gray-100 opacity-90 z-0"></div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <h2
+                        className="text-3xl font-bold text-gray-900 text-center mb-12 font-poppins"
+                        data-aos="fade-up"
+                    >
+                        Giáo Viên Của Bạn Tại Nha Trang
+                    </h2>
+                    <div className="flex justify-center">
+                        <Card className="bg-white border border-amber-400 shadow-lg max-w-lg" data-aos="fade-up" data-aos-delay="100">
+                            <CardContent className="p-8 text-center">
+                                <div className="image-zoom-container">
+                                    <Image
+                                        src="/images/background_20.jpg"
+                                        alt="NGUYỄN THỊ NGỌC NHƯ"
+                                        width={96}
+                                        height={96}
+                                        className="w-24 h-24 rounded-full mx-auto mb-4"
+                                    />
+                                </div>
+                                <h3 className="text-xl font-bold text-gray-900 font-poppins flex items-center justify-center">
+                                    NGUYỄN THỊ NGỌC NHƯ
+                                    <span className="ml-2 text-amber-500 text-sm">✔ 8.0 IELTS</span>
+                                </h3>
+                                <p className="text-gray-600 font-light font-poppins">Đạt 8.0 IELTS, có nhiều năm kinh nghiệm giảng dạy và tự thiết kế website thi thử computer-based độc quyền, giúp học viên làm quen format thi hiện đại. Cô chuyên dạy lớp nhỏ và kèm 1-1 tại Nha Trang.</p>
+                                <div className="image-zoom-container mt-4">
+                                    <Image
+                                        src="/images/background_20.jpg"
+                                        alt="Classroom Setting"
+                                        width={400}
+                                        height={200}
+                                        className="w-full h-40 object-cover rounded-lg"
+                                    />
+                                </div>
+                                <Button asChild className="bg-orange-500 hover:bg-amber-400 text-white mt-4 font-poppins">
+                                    <a href="/teaching-method">Khám Phá Phương Pháp Giảng Dạy</a>
+                                </Button>
+                                <p className="mt-2 text-amber-500 font-poppins">
+                                    <a href="/test-platform" className="underline">Truy cập website thi thử</a>
+                                </p>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
+            </section>
 
         {/* Blog Posts Section */}
         <section className="py-16">

@@ -26,9 +26,9 @@ export const NAV_LINKS = [
         title: 'Blog',
         href: '/blog',
     },
-    {
+    /*{
         id: 'contact',
         title: 'Liên Hệ',
         href: '/contact',
-    },
+    },*/
 ];

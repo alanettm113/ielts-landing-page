@@ -1,7 +1,6 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
 import DesktopView from '@/components/layout/MainView';
-
 import MessengerButton from "@/components/layout/MessengerButton";
 import Footer from '@/components/layout/Footer';
 

@@ -127,6 +127,24 @@
   }
 }
 
+@layer utilities {
+  .bg-custom-conic {
+    background-image: conic-gradient(at bottom right, #1e3a8a, #dcfce7, #e2e8f0); /* blue-900, green-100, slate-200 */
+    background-size: cover;
+    background-position: center;
+    /* Optional: Uncomment the line below if you want a fixed background effect */
+    /* background-attachment: fixed; */
+  }
+  .bg-custom-amber {
+    background: conic-gradient(at left top, rgb(250, 204, 21), rgb(253, 230, 138), rgb(254, 243, 199)); 
+    background-size: cover;
+    background-position: center;
+  }
+  
+
+
+}
+
 body {
   font-family: 'Poppins', sans-serif;
   color: rgb(var(--foreground-rgb));
