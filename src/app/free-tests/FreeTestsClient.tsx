@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Book, Headphones, Pen, Mic, ArrowRight, Search } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
