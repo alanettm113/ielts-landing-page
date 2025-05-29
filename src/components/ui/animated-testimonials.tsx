@@ -2,7 +2,7 @@
 
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Star } from 'lucide-react';
 import Image from 'next/image';
 
@@ -13,7 +13,7 @@ type Testimonial = {
     src: string;
     };
 
-    export const AnimatedTestimonials = ({
+export const AnimatedTestimonials = ({
     testimonials,
     autoplay = false,
     }: {
@@ -22,13 +22,13 @@ type Testimonial = {
     }) => {
     const [active, setActive] = useState(0);
 
-    const handleNext = () => {
+    const handleNext = useCallback(() => {
         setActive((prev) => (prev + 1) % testimonials.length);
-    };
+    }, [testimonials.length]);
 
-    const handlePrev = () => {
+    const handlePrev = useCallback(() => {
         setActive((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-    };
+    }, [testimonials.length]);
 
     const isActive = (index: number) => {
         return index === active;
@@ -39,7 +39,7 @@ type Testimonial = {
         const interval = setInterval(handleNext, 5000);
         return () => clearInterval(interval);
         }
-    }, [autoplay]);
+    }, [autoplay, handleNext]);
 
     const randomRotateY = () => {
         return Math.floor(Math.random() * 21) - 10;

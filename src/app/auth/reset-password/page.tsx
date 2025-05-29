@@ -21,82 +21,104 @@ export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
 
   // Extract the reset token and error parameters from the URL
-  const token = searchParams.get('token');
+  const accessToken = searchParams.get('access_token');
+  const refreshToken = searchParams.get('refresh_token');
   const errorParam = searchParams.get('error');
   const errorCode = searchParams.get('error_code');
   const errorDescription = searchParams.get('error_description');
 
   useEffect(() => {
-  const verifyToken = async () => {
-    if (errorParam || errorCode || errorDescription) {
-      const decodedError = errorDescription
-        ? decodeURIComponent(errorDescription)
-        : 'An error occurred with the reset link.';
-      setError(`${decodedError} Redirecting to request a new link...`);
-      setTimeout(() => {
-        router.push('/auth/forgot-password');
-      }, 3000);
+    const authenticateWithToken = async () => {
+      if (errorParam || errorCode || errorDescription) {
+        const decodedError = errorDescription
+          ? decodeURIComponent(errorDescription)
+          : 'An error occurred with the reset link.';
+        setError(`${decodedError} Redirecting to request a new link...`);
+        setTimeout(() => {
+          router.push('/auth/forgot-password');
+        }, 3000);
+        return;
+      }
+
+      if (!accessToken || !refreshToken) {
+        setError('Missing reset token(s). Redirecting to forgot password page...');
+        setTimeout(() => {
+          router.push('/auth/forgot-password');
+        }, 3000);
+        return;
+      }
+
+      try {
+        // Set the session using the access_token and refresh_token
+        const { error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+
+        if (error) {
+          console.error('Token authentication error:', error);
+          setError('Invalid or expired reset token. Redirecting to forgot password page...');
+          setTimeout(() => {
+            router.push('/auth/forgot-password');
+          }, 3000);
+          return;
+        }
+
+        // Token is valid, allow password reset
+        setIsTokenValid(true);
+      } catch (err) {
+        console.error('Error setting session:', err);
+        setError('An error occurred while verifying the token. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    authenticateWithToken();
+  }, [accessToken, refreshToken, router, errorParam, errorCode, errorDescription]);
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMessage(null);
+    setError(null);
+
+    if (!newPassword.trim() || !confirmPassword.trim()) {
+      setError('Both password fields are required');
       return;
     }
 
-    if (!token) {
-      setError('No reset token found. Redirecting to forgot password page...');
-      setTimeout(() => {
-        router.push('/auth/forgot-password');
-      }, 3000);
+    if (newPassword !== confirmPassword) {
+      setError('Passwords do not match');
       return;
     }
 
-    // Skip verifyOtp and proceed to form
-    setIsTokenValid(true);
-    setIsLoading(false);
+    if (newPassword.length < 8 || !/[A-Za-z]/.test(newPassword) || !/\d/.test(newPassword)) {
+      setError('Password must be at least 8 characters long and include letters and numbers');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      // Update the user's password
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+
+      if (error) {
+        console.error('Supabase update password error:', error);
+        setError(error.message || 'Failed to reset password');
+        return;
+      }
+
+      setMessage('Password reset successfully! Redirecting to login...');
+      setTimeout(() => {
+        router.push('/login');
+      }, 2000);
+    } catch (err) {
+      console.error('Error resetting password:', err);
+      setError('An error occurred. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-  verifyToken();
-}, [token, router, errorParam, errorCode, errorDescription]);
-
-const handleResetPassword = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setMessage(null);
-  setError(null);
-
-  if (!newPassword.trim() || !confirmPassword.trim()) {
-    setError('Both password fields are required');
-    return;
-  }
-
-  if (newPassword !== confirmPassword) {
-    setError('Passwords do not match');
-    return;
-  }
-
-  if (newPassword.length < 8 || !/[A-Za-z]/.test(newPassword) || !/\d/.test(newPassword)) {
-    setError('Password must be at least 8 characters long and include letters and numbers');
-    return;
-  }
-
-  try {
-    setIsLoading(true);
-    // Use the token directly to update the password
-    const { data, error } = await supabase.auth.api.updateUser(token, { password: newPassword });
-
-    if (error) {
-      console.error('Supabase update password error:', error);
-      setError(error.message || 'Failed to reset password');
-      return;
-    }
-
-    setMessage('Password reset successfully! Redirecting to login...');
-    setTimeout(() => {
-      router.push('/login');
-    }, 2000);
-  } catch (err) {
-    console.error('Error resetting password:', err);
-    setError('An error occurred. Please try again later.');
-  } finally {
-    setIsLoading(false);
-  }
-};
 
   if (isLoading && !error) {
     return (
@@ -174,5 +196,5 @@ const handleResetPassword = async (e: React.FormEvent) => {
         </p>
       </div>
     </div>
-  );
-}
+    );
+  }

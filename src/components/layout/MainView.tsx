@@ -73,7 +73,7 @@ export default function MainView() {
               <div className="flex items-center justify-between px-3 py-2">
                 <Link
                   href={link.href}
-                  className="text-gray-900 hover:bg-amber-100 hover:text-amber-500 px-1 py-3 transition duration-300 ease-in-out rounded-md w-full hover:scale-100"
+                  className="text-gray-900 hover:bg-amber-100 hover:text-amber-500 px-1 py-3 transition duration-300 ease-in-out rounded-md w-full hover:scale-105 mr-4"
                   onClick={handleLinkClick}
                 >
                   {link.title}
@@ -92,7 +92,7 @@ export default function MainView() {
                     <Link
                       key={subLink.id}
                       href={subLink.href}
-                      className="block text-gray-900 hover:bg-amber-100 hover:text-amber-500 px-2 py-3 transition duration-300 ease-in-out rounded-md hover:scale-105"
+                      className="block text-gray-900 hover:bg-amber-100 hover:text-amber-500 px-2 py-3 transition duration-300 ease-in-out rounded-md hover:scale-105 mr-4"
                       onClick={handleLinkClick}
                     >
                       {subLink.title}
@@ -104,7 +104,7 @@ export default function MainView() {
           ) : (
             <Link
               href={link.href}
-              className="block text-gray-900 hover:bg-amber-100 hover:text-amber-500 px-3 py-3 transition duration-300 ease-in-out rounded-md hover:scale-105"
+              className="block text-gray-900 hover:bg-amber-100 hover:text-amber-500 px-3 py-3 transition duration-300 ease-in-out rounded-md hover:scale-105 mr-4"
               onClick={handleLinkClick}
             >
               {link.title}
@@ -122,10 +122,10 @@ export default function MainView() {
       ) : (
         <Link
           href="/auth/login"
-          className="inline-flex justify-center px-3 py-4"
+          className="inline-flex justify-center px-3 py-2"
           onClick={handleLinkClick}
         >
-          <div className="relative inline-flex justify-center px-6 py-3 overflow-hidden font-bold text-white rounded-full shadow-2xl group bg-emerald-500">
+          <div className="relative inline-flex justify-center px-6 py-1 overflow-hidden font-bold text-white rounded-full shadow-2xl group bg-emerald-500">
             <span className="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-br from-pink-600 via-purple-700 to-blue-400 group-hover:opacity-100"></span>
             <span className="absolute top-0 left-0 w-full bg-gradient-to-b from-white to-transparent opacity-5 h-1/3"></span>
             <span className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-white to-transparent opacity-5"></span>
@@ -209,7 +209,7 @@ export default function MainView() {
             ) : (
               <Link
                 href="/auth/login"
-                className="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-white rounded-full shadow-2xl group bg-emerald-500"
+                className="relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-bold text-white rounded-full shadow-2xl group bg-emerald-500"
               >
                 <span className="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-br from-pink-600 via-purple-700 to-blue-400 group-hover:opacity-100"></span>
                 <span className="absolute top-0 left-0 w-full bg-gradient-to-b from-white to-transparent opacity-5 h-1/3"></span>
