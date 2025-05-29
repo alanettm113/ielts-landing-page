@@ -1,20 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabase } from '@/lib/supabase';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +45,7 @@ export default function ForgotPasswordPage() {
       const { error: logError } = await supabase.from('password_resets').insert([
         {
           email,
-          requested_at: new Date().toISOString(), // 2025-05-27T13:07:00+00:00 for 08:07 PM +07
+          requested_at: new Date().toISOString(),
         },
       ]);
 
